@@ -4,7 +4,9 @@ package com.example.squadpartyplannerapp;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,14 +42,15 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
     Context context;
     NavController navController;
     EditText No_of_Guests;
-    TextView Start_Time,End_Time,Date;
-    String[] Type_of_Event = {"Select Type of Event","Small","Medium","Large","Grand"};
+    TextView Start_Time,End_Time,StartDate,EndDate;
+    String[] Type_of_Event = {"Select Type of Event","Birthday party","Casual Party","Graduation Party","Fresher Party","Others"};
     Button Next;
     Spinner Type;
     ProgressBar progressBar;
-    String date,startTime,endTime,type,noOfGuests,time;
+    String start_date,end_date,startTime,endTime,type,noOfGuests,time;
     SimpleDateFormat sdf;
     SharedPreferences sharedPreferences;
+    Intent i;
 
 
     public add_event_f2() {
@@ -74,7 +79,8 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
         Type = view.findViewById(R.id.event_Type_f2);
         Start_Time = view.findViewById(R.id.event_Start_time_f2);
         End_Time = view.findViewById(R.id.event_End_time_f2);
-        Date = view.findViewById(R.id.event_date_f2);
+        StartDate = view.findViewById(R.id.event_StartDate_f2);
+        EndDate = view.findViewById(R.id.event_EndDate_f2);
         No_of_Guests = view.findViewById(R.id.event_no_guest_f2);
         Next = view.findViewById(R.id.next_btn_f2);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),R.layout.support_simple_spinner_dropdown_item,Type_of_Event);
@@ -91,9 +97,33 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
 
             }
         });
+
+        i = getActivity().getIntent();
+        if (i.getBooleanExtra("flag",false))
+        {
+            int position = 0;
+            for(int j=0;j<Type_of_Event.length;j++)
+            {
+                if(Type_of_Event[j].contentEquals(i.getStringExtra("eventType")))
+                {
+                    position = j;
+                    break;
+                }
+            }
+            Type.setSelection(position);
+            Start_Time.setText(i.getStringExtra("eventStartTime"));
+            End_Time.setText(i.getStringExtra("eventEndTime"));
+            StartDate.setText(i.getStringExtra("eventStartDate"));
+            EndDate.setText(i.getStringExtra("eventEndDate"));
+            No_of_Guests.setText(i.getStringExtra("noOfGuest"));
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Update Event");
+        }
+
+
         Start_Time.setOnClickListener(this);
         End_Time.setOnClickListener(this);
-        Date.setOnClickListener(this);
+        StartDate.setOnClickListener(this);
+        EndDate.setOnClickListener(this);
         Next.setOnClickListener(this);
 
     }
@@ -108,24 +138,54 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
         {
             setEndTime();
         }
-        else  if(v == Date)
+        else  if(v == StartDate)
         {
-            setDate();
+            setStartDate();
+        }
+        else if(v == EndDate)
+        {
+            setEndDate();
         }
         else if(v == Next)
         {
             Log.e("Selected Dropdown Item",type);
-            date = Date.getText().toString();
+            start_date = StartDate.getText().toString();
+            end_date = EndDate.getText().toString();
             startTime = Start_Time.getText().toString();
             endTime = End_Time.getText().toString();
             noOfGuests = No_of_Guests.getText().toString();
-            if(!date.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty()  && !noOfGuests.isEmpty() && !type.contentEquals("Select Type of Event"))
+
+            if(start_date.isEmpty())
             {
+                Toast.makeText(context,"Please Select Start Date for Event!",Toast.LENGTH_LONG).show();
+            }
+            else if(end_date.isEmpty())
+            {
+                Toast.makeText(context,"Please Select End Date for Event!",Toast.LENGTH_LONG).show();
+            }
+            else if(startTime.isEmpty())
+            {
+                Toast.makeText(context,"Please Select Start time!",Toast.LENGTH_LONG).show();
+            }
+            else if(endTime.isEmpty())
+            {
+                Toast.makeText(context,"Please Select End time!",Toast.LENGTH_LONG).show();
+            }
+            else if(noOfGuests.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter No of Guests!",Toast.LENGTH_LONG).show();
+            }
+            else if(type.contentEquals("Select Type of Event"))
+            {
+                Toast.makeText(context,"Please Select Type of Event!",Toast.LENGTH_LONG).show();
+            }
+            else{
                 if(compareTime())
                 {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("event_type",type);
-                    editor.putString("event_date",date);
+                    editor.putString("event_Start_date",start_date);
+                    editor.putString("event_End_date",end_date);
                     editor.putString("event_start_time",startTime);
                     editor.putString("event_end_time",endTime);
                     editor.putString("event_no_of_guests",noOfGuests);
@@ -136,17 +196,18 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
                 {
                     Toast.makeText(context,"End Should not less then Start Time!",Toast.LENGTH_LONG).show();
                 }
+            }
 
-            }
+
+            /*if(!date.isEmpty() && !startTime.isEmpty() && !endTime.isEmpty()  && !noOfGuests.isEmpty() && !type.contentEquals("Select Type of Event"))
+            {}
             else
-            {
-                Toast.makeText(context,"Please fill all fields!",Toast.LENGTH_LONG).show();
-            }
+            {Toast.makeText(context,"Please fill all fields!",Toast.LENGTH_LONG).show(); }*/
         }
     }
 
-    /** Method for Setting DATE In Edit Text using Calender START **/
-    private void setDate()
+    /** Method for Setting Start DATE In Edit Text using Calender START **/
+    private void setStartDate()
     {
         DatePickerDialog datePicker;
         final Calendar calendar = Calendar.getInstance();
@@ -158,7 +219,7 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 String date_ = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                Date.setText(date_);
+                StartDate.setText(date_);
                 Log.i("StartTime_booking:", date_);
             }
         }, yy, mm, dd);
@@ -167,7 +228,32 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
         datePicker.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.AppPrimary));
         datePicker.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.AppPrimary));
     }
-    /** Method for Setting DATE In Edit Text using Calender END **/
+    /** Method for Setting Start DATE In Edit Text using Calender END **/
+
+    /** Method for Setting End DATE In Edit Text using Calender START **/
+    private void setEndDate()
+    {
+        DatePickerDialog datePicker;
+        final Calendar calendar = Calendar.getInstance();
+        int yy = calendar.get(Calendar.YEAR);
+        int mm = calendar.get(Calendar.MONTH);
+        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+
+        datePicker = new DatePickerDialog(getActivity(), R.style.TimePickerTheme, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date_ = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+                EndDate.setText(date_);
+                Log.i("StartTime_booking:", date_);
+            }
+        }, yy, mm, dd);
+        datePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        datePicker.show();
+        datePicker.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.AppPrimary));
+        datePicker.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.AppPrimary));
+    }
+    /** Method for Setting End DATE In Edit Text using Calender END **/
+
     /** Method for Setting START TIME In Edit Text using CLOCK START **/
     private void setStartTime()
     {
@@ -353,7 +439,6 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
         }
     }
     /** METHOD FOR COMPARE START TIME AND END TIME END **/
-
 
 
 }

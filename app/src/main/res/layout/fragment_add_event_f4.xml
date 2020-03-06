@@ -38,26 +38,21 @@
         android:id="@+id/add_l_f4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-
-
         android:background="@android:color/white"
         android:orientation="vertical"
-
         app:layout_constraintBottom_toTopOf="@+id/AddEvenr_btn_f4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         android:elevation="5dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Confirm Details"
             android:textSize="20sp"
-            android:textAlignment="center"
+            android:gravity="center"
             android:textColor="@android:color/white"
             android:background="@color/colorPrimaryDark"
             android:padding="10sp"/>
@@ -73,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Event Name :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -100,19 +95,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Event Date :"
-                android:textAlignment="center"
+                android:text="Event Start Date :"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/event_date_f4"
+                android:id="@+id/event_start_date_f4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:hint="Event Date"
+                android:hint="Event Start Date"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Event End Date :"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/event_end_date_f4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:hint="Event End Date"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
                 android:textSize="16sp" />
@@ -129,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Event Start Time :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -156,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Event End Time :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -212,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Event Type :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -240,7 +262,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Instruction :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -268,7 +290,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="People Invited :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />
@@ -295,7 +317,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Extras :"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="16sp" />

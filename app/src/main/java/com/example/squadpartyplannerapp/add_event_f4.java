@@ -24,19 +24,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.squadpartyplannerapp.ModelClass.Event_Info;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
-import java.net.URI;
 import java.util.UUID;
 
 
@@ -45,10 +45,10 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
     NavController navController;
     ProgressBar progressBar;
     ImageView EventImage;
-    TextView Name,Date,StartTime,EndTime,Place,Type,Instruction,NoOfGuest,Extras;
+    TextView Name,StartDate,EndDate,StartTime,EndTime,Place,Type,Instruction,NoOfGuest,Extras;
     Button AddButton;
     Uri EventImageUri;
-    String eventImage,eventImageExtention,eventName,eventDate,eventStartTime,eventEndTime,eventPlace,eventType,eventInstruction,noOfGuest,assistance,decoration,food,extras="";
+    String eventImage,eventImageExtention,eventName,eventStartDate,eventEndDate,eventStartTime,eventEndTime,eventPlace,eventType,eventInstruction,noOfGuest,assistance,decoration,food,extras="";
     SharedPreferences sharedPreferences;
 
     FirebaseStorage firebaseStorage;
@@ -56,6 +56,8 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
+
+    Intent i;
 
 
     public add_event_f4() {
@@ -82,7 +84,8 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
         navController = Navigation.findNavController(getActivity(),R.id.nav_addEvent_host_fragment);
         EventImage = view.findViewById(R.id.event_pic_f4);
         Name = view.findViewById(R.id.event_name_f4);
-        Date = view.findViewById(R.id.event_date_f4);
+        StartDate = view.findViewById(R.id.event_start_date_f4);
+        EndDate = view.findViewById(R.id.event_end_date_f4);
         StartTime = view.findViewById(R.id.event_start_time_f4);
         EndTime = view.findViewById(R.id.event_end_time_f4);
         Place = view.findViewById(R.id.event_place_f4);
@@ -94,6 +97,12 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
         progressBar = view.findViewById(R.id.progrerss_add_event_f4);
         getAllInfo();
         setAllInfo();
+        i = getActivity().getIntent();
+        if(i.getBooleanExtra("flag",false))
+        {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Update Event");
+            AddButton.setText("Update Event");
+        }
         AddButton.setOnClickListener(this);
     }
 
@@ -101,16 +110,23 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         if(v == AddButton)
         {
-            AddEvent();
+            if(i.getBooleanExtra("flag",false))
+            {
+                updateEvent();
+            }
+            else {
+                AddEvent();
+            }
         }
     }
 
     private void getAllInfo()
     {
         eventImage = sharedPreferences.getString("event_image_uri","");
-        eventImageExtention = sharedPreferences.getString("event_image_extention","");
+        eventImageExtention = sharedPreferences.getString("event_image_extention","jpg");
         eventName = sharedPreferences.getString("event_name","");
-        eventDate = sharedPreferences.getString("event_date","");
+        eventStartDate = sharedPreferences.getString("event_Start_date","");
+        eventEndDate = sharedPreferences.getString("event_End_date","");
         eventStartTime = sharedPreferences.getString("event_start_time","");
         eventEndTime = sharedPreferences.getString("event_end_time","");
         eventPlace = sharedPreferences.getString("event_place","");
@@ -124,10 +140,11 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
     }
     private void setAllInfo()
     {
-        EventImageUri= Uri.parse(eventImage);
-        EventImage.setImageURI(EventImageUri);
+            EventImageUri = Uri.parse(eventImage);
+            EventImage.setImageURI(EventImageUri);
             Name.setText(eventName);
-            Date.setText(eventDate);
+            StartDate.setText(eventStartDate);
+            EndDate.setText(eventEndDate);
             StartTime.setText(eventStartTime);
             EndTime.setText(eventEndTime);
             Place.setText(eventPlace);
@@ -156,7 +173,7 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
     }
     private void AddEvent()
     {
-        progressBar.setVisibility(View.VISIBLE);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -165,7 +182,6 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
         storageReference = firebaseStorage.getReference();
         final String uid = firebaseAuth.getCurrentUser().getUid();
         final String eventID = UUID.randomUUID().toString();
-
 
         final StorageReference str_ref = storageReference.child("Events/"+uid+"/"+eventID).child("Event_Image."+eventImageExtention);
         str_ref.putFile(EventImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
@@ -180,17 +196,19 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
                         String url = uri.toString();
                         Log.i("Image URL",url);
 
-                        Event_Info event_info = new Event_Info(uid,url,eventName,eventDate,eventStartTime,eventEndTime,eventPlace,eventType,eventInstruction,noOfGuest,extras);
-
+                        Event_Info event_info = new Event_Info(uid,url,eventName,eventStartDate,eventEndDate,eventStartTime,eventEndTime,eventPlace,eventType,eventInstruction,noOfGuest,extras);
+                        progressBar.setVisibility(View.VISIBLE);
                         FirebaseDatabase.getInstance().getReference("Events").child(eventID).setValue(event_info).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                progressBar.setVisibility(View.GONE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("EventID",eventID);
-                                editor.commit();
-                                Toast.makeText(context, "Event Added Successfully!", Toast.LENGTH_SHORT).show();
-                                navController.navigate(R.id.action_add_event_f4_to_add_event_f5);
+                                if(task.isComplete()) {
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("EventID", eventID);
+                                    editor.commit();
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(context, "Event Added Successfully!", Toast.LENGTH_SHORT).show();
+                                    navController.navigate(R.id.action_add_event_f4_to_add_event_f5);
+                                }
                             }
                         });
                     }
@@ -207,5 +225,65 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
         });
 
     }
+    private void updateEvent() {
+        progressBar.setVisibility(View.VISIBLE);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Events");
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
+        final String uid = firebaseAuth.getCurrentUser().getUid();
+        final String eventID = i.getStringExtra("eventID");
+
+        if(i.getBooleanExtra("flag",false) && !i.getStringExtra("eventImage").contentEquals(EventImageUri.toString()))
+        {
+
+            final StorageReference str_ref = storageReference.child("Events/"+uid+"/"+eventID).child("Event_Image."+eventImageExtention);
+            str_ref.putFile(EventImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
+                {
+
+                    storageReference.child("Events/"+uid+"/"+eventID).child("Event_Image."+eventImageExtention).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            Log.i("Image URL",url);
+
+                            Event_Info event_info = new Event_Info(uid,url,eventName,eventStartDate,eventEndDate,eventStartTime,eventEndTime,eventPlace,eventType,eventInstruction,noOfGuest,extras);
+
+                            FirebaseDatabase.getInstance().getReference("Events").child(eventID).setValue(event_info).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isComplete()) {
+                                        progressBar.setVisibility(View.GONE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("EventID", eventID);
+                                        editor.commit();
+                                        Toast.makeText(context, "Event Updated Successfully!", Toast.LENGTH_SHORT).show();
+                                        navController.navigate(R.id.action_add_event_f4_to_add_event_f5);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener()
+            {
+                @Override
+                public void onFailure(@NonNull Exception e)
+                {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(context, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Toast.makeText(context,"Please Upload new Image or Same Image Again!",Toast.LENGTH_LONG).show();
+        }
+
+    }
 }

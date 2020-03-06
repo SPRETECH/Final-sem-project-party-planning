@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -30,20 +31,22 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //Navigation Component
-    implementation "androidx.navigation:navigation-fragment:2.2.0"
-    implementation "androidx.navigation:navigation-ui:2.2.0"
+    implementation 'androidx.navigation:navigation-fragment:2.3.0-alpha03'
+    implementation 'androidx.navigation:navigation-ui:2.3.0-alpha03'
     //Material Design UI
-    implementation 'com.google.android.material:material:1.2.0-alpha04'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
     //Recycler View
     //end
     //Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.2'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.2'
     implementation 'com.google.firebase:firebase-database:19.2.1'
     //Glide For Image
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //For Circle Shape Image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }

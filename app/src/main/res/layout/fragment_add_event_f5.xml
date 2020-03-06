@@ -48,7 +48,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:textAlignment="center"/>
+                android:gravity="center"/>
             <TextView
                 android:id="@+id/event_id_f5"
                 android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:textAlignment="center"/>
+                android:gravity="center"/>
             <TextView
                 android:id="@+id/event_name_f5"
                 android:layout_width="match_parent"
@@ -88,16 +88,38 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Event Date:"
+                android:text="Event Start Date:"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:textAlignment="center"/>
+                android:gravity="center"/>
             <TextView
-                android:id="@+id/event_date_f5"
+                android:id="@+id/event_start_date_f5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Event Date"
+                android:hint="Event Start Date"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event End Date:"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:gravity="center"/>
+            <TextView
+                android:id="@+id/event_end_date_f5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Event End Date"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"/>
@@ -114,7 +136,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:textAlignment="center"/>
+                android:gravity="center"/>
             <TextView
                 android:id="@+id/event_start_Time_f5"
                 android:layout_width="match_parent"
@@ -136,7 +158,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:layout_weight="1"
-                android:textAlignment="center"/>
+                android:gravity="center"/>
             <TextView
                 android:id="@+id/event_end_time_f5"
                 android:layout_width="match_parent"

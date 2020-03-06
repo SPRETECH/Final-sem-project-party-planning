@@ -43,14 +43,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Main3Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     Toolbar toolbar;
     public DrawerLayout HomeDrawerLayout;
     public NavigationView HomeNavigationView;
     public NavController navController;
     public TextView UserName,EmailID,PhoneNo;
-    public ImageView profileImage;
-    public String firstname,lastname,emailID,phoneno,profilePhotoUrl;
+    public CircleImageView profileImage;
+    private String fn,ln,emailID,pn,profilePhotoUrl;
     public FirebaseAuth firebaseAuth;
     public FirebaseDatabase firebaseDatabase;
     public FirebaseUser firebaseUser;
@@ -99,20 +101,33 @@ public class Main3Activity extends AppCompatActivity implements NavigationView.O
         final String uid = firebaseUser.getUid();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("User");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
                 {
-                    firstname = dataSnapshot.child(uid).child("FirstName").getValue().toString();
-                    lastname = dataSnapshot.child(uid).child("LastName").getValue().toString();
-                    emailID = dataSnapshot.child(uid).child("EmailID").getValue().toString();
-                    phoneno = dataSnapshot.child(uid).child("PhoneNo").getValue().toString();
-                    UserName.setText(firstname+" "+lastname);
-                    EmailID.setText(emailID);
-                    PhoneNo.setText(phoneno);
-                    profilePhotoUrl = dataSnapshot.child(uid).child("ProfileURL").getValue().toString();
-                    Picasso.get().load(profilePhotoUrl).into(profileImage);
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                        if(ds.getKey().contentEquals(uid)) {
+                            fn = ds.child("firstName").getValue().toString();
+                            ln = ds.child("lastName").getValue().toString();
+                            emailID = ds.child("emailID").getValue().toString();
+                            pn = ds.child("phoneNo").getValue().toString();
+                            UserName.setText(fn + " " + ln);
+                            EmailID.setText(emailID);
+                            PhoneNo.setText(pn);
+
+                            profilePhotoUrl = ds.child("profileURL").getValue().toString();
+                            Picasso.get().load(profilePhotoUrl).into(profileImage);
+
+                           /* Log.e("FirstName:",ds.child("firstName").getValue().toString());
+                            Log.e("LastName:",ds.child("lastName").getValue().toString());
+                            Log.e("EmailID:",ds.child("emailID").getValue().toString());
+                            Log.e("Phone:",ds.child("phoneNo").getValue().toString());
+                            Log.e("profileURL:",ds.child("profileURL").getValue().toString());*/
+
+
+                        }
+                    }
                 }
             }
 
@@ -143,12 +158,12 @@ public class Main3Activity extends AppCompatActivity implements NavigationView.O
         });
 
     }
-    private void DeleteToken() {
+   /* private void DeleteToken() {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         String uid = firebaseUser.getUid();
         databaseReference.child(uid).child("Tokenid").removeValue();
-    }
+    }*/
 
 
     @Override
@@ -177,7 +192,10 @@ public class Main3Activity extends AppCompatActivity implements NavigationView.O
                 navController.navigate(R.id.action_home_frag_to_edit_profile_frag);
                 break;
             case R.id.notification_nav_draw:
-                Toast.makeText(this,"Notification",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(this,NotificationActivity.class);
+                startActivity(i);
+                finish();
+                //Toast.makeText(this,"Notification",Toast.LENGTH_LONG).show();
                 break;
             case R.id.about_us_nav_draw:
                 navController.navigate(R.id.action_home_frag_to_about_us_frag);
@@ -199,7 +217,7 @@ public class Main3Activity extends AppCompatActivity implements NavigationView.O
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //your deleting code
 
-                                DeleteToken();
+                                //DeleteToken();
                                 FirebaseAuth.getInstance().signOut();
                                 Intent intent_signout = new Intent(Main3Activity.this, Main2Activity.class);
                                 startActivity(intent_signout);

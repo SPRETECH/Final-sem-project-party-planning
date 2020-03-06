@@ -114,34 +114,33 @@
                 android:id="@+id/password_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
-                android:textSize="16sp"
-                android:background="@drawable/text_path_bg"
-                android:padding="10dp"
-                android:backgroundTint="@android:color/darker_gray"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
-                />
+                android:autofillHints=""
+                android:background="@drawable/text_path_bg"
+                android:backgroundTint="@android:color/darker_gray"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/confirm_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
                 android:autofillHints=""
+                android:background="@drawable/text_path_bg"
+                android:backgroundTint="@android:color/darker_gray"
                 android:hint="Confirm Password"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
+                android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
-                android:textSize="16sp"
-                android:background="@drawable/text_path_bg"
-                android:padding="10dp"
-                android:backgroundTint="@android:color/darker_gray"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
 

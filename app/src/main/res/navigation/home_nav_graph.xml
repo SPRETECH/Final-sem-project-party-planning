@@ -21,7 +21,11 @@
         android:id="@+id/upcoming_frag"
         android:name="com.example.squadpartyplannerapp.upcoming_frag"
         android:label="fragment_upcoming_frag"
-        tools:layout="@layout/fragment_upcoming_frag" />
+        tools:layout="@layout/fragment_upcoming_frag" >
+        <action
+            android:id="@+id/action_upcoming_frag_to_upcomingEventDetails"
+            app:destination="@id/upcomingEventDetails" />
+    </fragment>
     <fragment
         android:id="@+id/completed_frag"
         android:name="com.example.squadpartyplannerapp.completed_frag"
@@ -49,5 +53,50 @@
         <action
             android:id="@+id/action_about_us_frag_to_home_frag"
             app:destination="@id/home_frag" />
+    </fragment>
+    <fragment
+        android:id="@+id/upcomingEventDetails"
+        android:name="com.example.squadpartyplannerapp.UpcomingEventDetails"
+        android:label="fragment_upcoming_event_details"
+        tools:layout="@layout/fragment_upcoming_event_details" >
+        <action
+            android:id="@+id/action_upcomingEventDetails_to_upcoming_frag"
+            app:destination="@id/upcoming_frag" />
+        <action
+            android:id="@+id/action_upcomingEventDetails_to_inviteUser"
+            app:destination="@id/inviteUser" />
+        <action
+            android:id="@+id/action_upcomingEventDetails_to_guestList"
+            app:destination="@id/guestList" />
+    </fragment>
+    <fragment
+        android:id="@+id/inviteUser"
+        android:name="com.example.squadpartyplannerapp.InviteUser"
+        android:label="fragment_invite_user"
+        tools:layout="@layout/fragment_invite_user" >
+        <action
+            android:id="@+id/action_inviteUser_to_upcomingEventDetails"
+            app:destination="@id/upcomingEventDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/guestList"
+        android:name="com.example.squadpartyplannerapp.GuestList"
+        android:label="Guest List"
+        tools:layout="@layout/fragment_guest_list" >
+        <action
+            android:id="@+id/action_guestList_to_upcomingEventDetails"
+            app:destination="@id/upcomingEventDetails" />
+        <action
+            android:id="@+id/action_guestList_to_sendUpdateFrag"
+            app:destination="@id/sendUpdateFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendUpdateFrag"
+        android:name="com.example.squadpartyplannerapp.SendUpdateFrag"
+        android:label="fragment_send_update"
+        tools:layout="@layout/fragment_send_update" >
+        <action
+            android:id="@+id/action_sendUpdateFrag_to_upcomingEventDetails"
+            app:destination="@id/upcomingEventDetails" />
     </fragment>
 </navigation>

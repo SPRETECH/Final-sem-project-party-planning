@@ -56,6 +56,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,7 +66,7 @@ public class edit_profile_frag extends Fragment implements View.OnClickListener{
     Context context;
     ProgressBar progressBar;
     Button updatebtn;
-    ImageView profileImage;
+    CircleImageView profileImage;
     EditText firstName,lastName,emailID,phoneNo,password,confirmPassword;
     NavController navController;
 
@@ -80,6 +82,12 @@ public class edit_profile_frag extends Fragment implements View.OnClickListener{
 
     public edit_profile_frag() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -133,11 +141,11 @@ public class edit_profile_frag extends Fragment implements View.OnClickListener{
                         if (uid.contentEquals(ds.getKey())) {
                             progressBar.setVisibility(View.GONE);
                             Log.i("Key",ds.getKey());
-                            firstName.setText(ds.child("FirstName").getValue().toString());
-                            lastName.setText(ds.child("LastName").getValue().toString());
-                            emailID.setText(ds.child("EmailID").getValue().toString());
-                            phoneNo.setText(ds.child("PhoneNo").getValue().toString());
-                            image_uri = Uri.parse(ds.child("ProfileURL").getValue().toString());
+                            firstName.setText(ds.child("firstName").getValue().toString());
+                            lastName.setText(ds.child("lastName").getValue().toString());
+                            emailID.setText(ds.child("emailID").getValue().toString());
+                            phoneNo.setText(ds.child("phoneNo").getValue().toString());
+                            image_uri = Uri.parse(ds.child("profileURL").getValue().toString());
                             Picasso.get().load(image_uri).into(profileImage);
                         }
                     }
@@ -153,12 +161,12 @@ public class edit_profile_frag extends Fragment implements View.OnClickListener{
 
     }
 
-    @Override
+  /*  @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem item = menu.findItem(R.id.add_event_toolbar);
         item.setVisible(false);
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -305,12 +313,12 @@ public class edit_profile_frag extends Fragment implements View.OnClickListener{
                                   progressBar.setVisibility(View.GONE);
         //Log.e("Whole Task","\nEmail:"+EMAILID+"\nPhone:"+PHONE+"\nFirstName:"+FIRST_NAME+"\nLast name:"+LAST_NAME+"\nPassword:"+PASSWORD+"\nCONFIRM:"+CONFORM);
         //Toast.makeText(context,"Email & Password Changed Successfully !",Toast.LENGTH_LONG).show();
-        databaseReference.child(uid).child("EmailID").setValue(EMAILID);
-        databaseReference.child(uid).child("Password").setValue(PASSWORD);
-        databaseReference.child(uid).child("PhoneNo").setValue(PHONE);
-        databaseReference.child(uid).child("FirstName").setValue(FIRST_NAME);
-        databaseReference.child(uid).child("LastName").setValue(LAST_NAME);
-        databaseReference.child(uid).child("ProfileURL").setValue(getDownlaodUrl(image_uri));
+        databaseReference.child(uid).child("emailID").setValue(EMAILID);
+        databaseReference.child(uid).child("password").setValue(PASSWORD);
+        databaseReference.child(uid).child("phoneNo").setValue(PHONE);
+        databaseReference.child(uid).child("firstName").setValue(FIRST_NAME);
+        databaseReference.child(uid).child("lastName").setValue(LAST_NAME);
+        databaseReference.child(uid).child("profileURL").setValue(getDownlaodUrl(image_uri));
         Toast.makeText(context,"Profile is Update Successfully !",Toast.LENGTH_LONG).show();
         reAuthUser(EMAILID,PASSWORD,firebaseUser);
         navController.navigate(R.id.action_edit_profile_frag_to_home_frag);
@@ -388,6 +396,12 @@ public class edit_profile_frag extends Fragment implements View.OnClickListener{
             }
         });
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
     }
 
 

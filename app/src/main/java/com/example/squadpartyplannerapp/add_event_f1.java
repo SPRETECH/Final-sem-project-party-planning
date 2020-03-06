@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 import java.util.Calendar;
 
 
@@ -51,10 +55,11 @@ public class add_event_f1 extends Fragment implements View.OnClickListener{
     String EventName,EventPlace;
     Context context;
     public Uri image_uri;
-    private String Imageextention = "";
+    private String Imageextention;
     ProgressBar progressBar;
     NavController navController;
     SharedPreferences sharedPreferences ;
+    Intent i ;
 
 
     public add_event_f1() {
@@ -77,7 +82,6 @@ public class add_event_f1 extends Fragment implements View.OnClickListener{
         ((AppCompatActivity)getActivity()).getSupportActionBar();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Event");
 
-
         eventName = view.findViewById(R.id.event_name_f1);
         eventPlace = view.findViewById(R.id.event_place_f1);
         eventImage = view.findViewById(R.id.event_pic_f1);
@@ -85,6 +89,18 @@ public class add_event_f1 extends Fragment implements View.OnClickListener{
         progressBar = view.findViewById(R.id.progrerss_add_event_f1);
         progressBar.setVisibility(View.GONE);
         navController = Navigation.findNavController(getActivity(),R.id.nav_addEvent_host_fragment);
+        i = getActivity().getIntent();
+            if (i.getBooleanExtra("flag",false))
+            {
+                eventName.setText(i.getStringExtra("eventName"));
+                image_uri = Uri.parse(i.getStringExtra("eventImage"));
+
+                Picasso.get().load(image_uri).into(eventImage);
+                eventPlace.setText(i.getStringExtra("eventPlace"));
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Update Event");
+            }
+
+
 
         sharedPreferences = getActivity().getSharedPreferences("AddEventData",Context.MODE_PRIVATE);
 
@@ -103,18 +119,44 @@ public class add_event_f1 extends Fragment implements View.OnClickListener{
             EventName = eventName.getText().toString();
             EventPlace = eventPlace.getText().toString();
 
-            if(        !image_uri.toString().isEmpty()
-                    && !EventName.isEmpty()
-                    && !EventPlace.isEmpty())
+            if(image_uri == null)
             {
+                Toast.makeText(context,"Please Upload Event Image!",Toast.LENGTH_LONG).show();
+            }
+            else if(EventName.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter Event Name!",Toast.LENGTH_LONG).show();
+            }
+            else if(EventPlace.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter Place for Event!",Toast.LENGTH_LONG).show();
+            }
+            else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("event_image_uri",image_uri.toString());
                 editor.putString("event_name",EventName);
                 editor.putString("event_place",EventPlace);
+                editor.putString("event_image_uri",image_uri.toString());
                 editor.putString("event_image_extention",Imageextention);
                 editor.commit();
                 navController.navigate(R.id.action_add_event_f1_to_add_event_f2);
             }
+
+            /*if(!image_uri.toString().isEmpty() && !EventName.isEmpty() && !EventPlace.isEmpty()) {
+            }
+            else {
+                if(image_uri.toString().isEmpty())
+                {
+                    Toast.makeText(context,"Please upload Event Image!",Toast.LENGTH_LONG).show();
+                }
+                else if(EventName.isEmpty())
+                {
+                    Toast.makeText(context,"Please Enter Event Name!",Toast.LENGTH_LONG).show();
+                }
+                else if(EventPlace.isEmpty())
+                {
+                    Toast.makeText(context,"Please Enter Event Place!",Toast.LENGTH_LONG).show();
+                }
+            }*/
            // Toast.makeText(context,EventName+"\n"+EventDate+"\n"+EventTime+"\n"+EventPlace+"\n"+EventType+"\n"+EventInfo,Toast.LENGTH_LONG).show();
         }
     }
@@ -200,24 +242,22 @@ public class add_event_f1 extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // Result code is RESULT_OK only if the user selects an Image
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            switch (requestCode)
+            {
                 case 1:
-                    //new EncodeImage(image_uri).execute();
                     eventImage.setImageURI(image_uri);
                     getFileExtention(image_uri);
                     Log.i("ImageURI",image_uri.toString());
                     break;
                 case 2:
-                    //data.getData returns the content URI for the selected Image
                     image_uri = data.getData();
-                    //new EncodeImage(image_uri).execute();
                     eventImage.setImageURI(image_uri);
                     getFileExtention(image_uri);
                     Log.i("ImageURI",image_uri.toString());
                     break;
             }
-
         }
     }
 

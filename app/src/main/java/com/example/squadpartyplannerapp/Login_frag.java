@@ -92,9 +92,16 @@ public class Login_frag extends Fragment implements View.OnClickListener{
         {
             Email = email.getText().toString();
             Password = password.getText().toString();
-            if(!Email.isEmpty() && !Password.isEmpty())
+            if(Email.isEmpty() )
             {
-                    FirebaseLoginMethod(Email, Password);
+                Toast.makeText(context,"Please Enter Email ID!",Toast.LENGTH_LONG).show();
+            }
+            else if (Password.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter Password!",Toast.LENGTH_LONG).show();
+            }
+            else {
+                FirebaseLoginMethod(Email, Password);
             }
         }
         else if(v ==  forgetPasswored)
@@ -127,7 +134,7 @@ public class Login_frag extends Fragment implements View.OnClickListener{
                 else
                 {
                     updateUI(null);
-                    Toast.makeText(getActivity().getApplicationContext(),"There is some Problem. Please Try Again!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(),task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
 
             }

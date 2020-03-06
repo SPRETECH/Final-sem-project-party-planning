@@ -2,7 +2,9 @@ package com.example.squadpartyplannerapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 public class add_event_f3 extends Fragment implements View.OnClickListener{
     Context context;
     NavController navController;
@@ -33,6 +37,7 @@ public class add_event_f3 extends Fragment implements View.OnClickListener{
     ProgressBar progressBar;
     public String assistance,decoration,food,description;
     SharedPreferences sharedPreferences;
+    Intent i;
     public add_event_f3() {
         // Required empty public constructor
     }
@@ -54,12 +59,54 @@ public class add_event_f3 extends Fragment implements View.OnClickListener{
         sharedPreferences = getActivity().getSharedPreferences("AddEventData",Context.MODE_PRIVATE);
         context = getActivity().getApplicationContext();
         navController = Navigation.findNavController(getActivity(),R.id.nav_addEvent_host_fragment);
+
         Description = view.findViewById(R.id.event_description_f3);
         Assistance = view.findViewById(R.id.event_assistance_f3);
         Decoration = view.findViewById(R.id.event_decoration_f3);
         Food = view.findViewById(R.id.event_food_f3);
         Next = view.findViewById(R.id.next_btn_f3);
         progressBar = view.findViewById(R.id.progress_add_event_f3);
+
+        i = getActivity().getIntent();
+        if (i.getBooleanExtra("flag",false))
+        {
+            Description.setText(i.getStringExtra("eventInstruction"));
+
+            if(i.getStringExtra("extras").contentEquals("[Assistance Needed][Decoration Needed][Food Arrengement Needed]"))
+            {
+                Assistance.setChecked(true);
+                Decoration.setChecked(true);
+                Food.setChecked(true);
+            }
+            else if(i.getStringExtra("extras").contentEquals("[Assistance Needed][Decoration Needed]"))
+            {
+                Assistance.setChecked(true);
+                Decoration.setChecked(true);
+            }
+            else if(i.getStringExtra("extras").contentEquals("[Decoration Needed][Food Arrengement Needed]"))
+            {
+                Decoration.setChecked(true);
+                Food.setChecked(true);
+            }
+            else if(i.getStringExtra("extras").contentEquals("[Assistance Needed][Food Arrengement Needed]"))
+            {
+                Assistance.setChecked(true);
+                Food.setChecked(true);
+            }
+            else if(i.getStringExtra("extras").contentEquals("[Assistance Needed]"))
+            {
+                Assistance.setChecked(true);
+            }
+            else if(i.getStringExtra("extras").contentEquals("[Decoration Needed]"))
+            {
+                Decoration.setChecked(true);
+            }
+            else if(i.getStringExtra("extras").contentEquals("[Food Arrengement Needed]"))
+            {
+                Food.setChecked(true);
+            }
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Update Event");
+        }
 
         Next.setOnClickListener(this);
 
@@ -94,7 +141,11 @@ public class add_event_f3 extends Fragment implements View.OnClickListener{
             }
             description = Description.getText().toString();
 
-            if(!description.isEmpty())
+            if(description.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter Event Description!",Toast.LENGTH_LONG).show();
+            }
+            else
             {
                 Log.e("extras ",assistance+"\n"+decoration+"\n"+food);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -105,10 +156,6 @@ public class add_event_f3 extends Fragment implements View.OnClickListener{
                 editor.commit();
                 //Toast.makeText(context,"Description: "+description+"\n Assistance: "+assistance+"\n Decoration: "+decoration+"\n Food: "+food,Toast.LENGTH_LONG).show();
                 navController.navigate(R.id.action_add_event_f3_to_add_event_f4);
-            }
-            else
-            {
-                Toast.makeText(context,"Please fill all fields!",Toast.LENGTH_LONG).show();
             }
         }
     }

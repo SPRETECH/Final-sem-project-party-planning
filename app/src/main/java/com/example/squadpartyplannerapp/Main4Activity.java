@@ -19,7 +19,6 @@ import android.view.animation.AnimationUtils;
 public class Main4Activity extends AppCompatActivity {
     Toolbar toolbar;
     NavController navController;
-    private static int SplashTimeout = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,7 @@ public class Main4Activity extends AppCompatActivity {
         toolbar = findViewById(R.id.add_event_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navController = Navigation.findNavController(this,R.id.nav_addEvent_host_fragment);
     }
@@ -41,28 +40,17 @@ public class Main4Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-            super.onBackPressed();
-
-
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
-        if (count == 0) {
             //super.onBackPressed();
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent i = new Intent(Main4Activity.this,Main3Activity.class);
-                    startActivity(i);
-                    finish();
-                    overridePendingTransition(R.anim.trans_right_out,R.anim.trans_right_in);
-                }
-            },SplashTimeout);
-            //additional code
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
         } else {
-            getSupportFragmentManager().popBackStack();
+            Log.i("MainActivity", "nothing on backstack, calling super");
+            //super.onBackPressed();
+            Intent i = new Intent(this,Main3Activity.class);
+            startActivity(i);
+            finish();
         }
-
-
     }
 }

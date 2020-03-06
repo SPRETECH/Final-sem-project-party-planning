@@ -71,9 +71,13 @@ public class ForgetPassword_frag extends Fragment implements View.OnClickListene
         if(v == send_verification_email)
         {
             Email_ID = email_id.getText().toString();
-            if(!Email_ID.isEmpty())
+
+            if(Email_ID.isEmpty())
             {
-                //Toast.makeText(context,"Password Reset Link has been sent on "+Email_ID,Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"Please Enter Registered Email ID!",Toast.LENGTH_LONG).show();
+            }
+            else
+            {
                 sendPasswordResetLink(Email_ID);
                 navController.navigate(R.id.action_forgetPassword_frag_to_login_frag);
             }

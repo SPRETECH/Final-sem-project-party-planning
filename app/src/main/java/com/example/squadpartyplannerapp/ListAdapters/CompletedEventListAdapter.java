@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.squadpartyplannerapp.ModelClass.EventData;
+import com.example.squadpartyplannerapp.ModelClass.Event_Info;
 import com.example.squadpartyplannerapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 public class CompletedEventListAdapter extends RecyclerView.Adapter<CompletedEventListAdapter.ItemViewHolder>
 {
     Context context;
-    ArrayList<EventData> dataArrayList;
-    EventData eventData;
+    ArrayList<Event_Info> dataArrayList;
+    Event_Info event_info;
     Uri eventImage;
 
-    public CompletedEventListAdapter(ArrayList<EventData> eventDataArrayList, Context context) {
+    public CompletedEventListAdapter(ArrayList<Event_Info> eventDataArrayList, Context context) {
         dataArrayList = eventDataArrayList;
         this.context = context;
     }
@@ -38,13 +38,14 @@ public class CompletedEventListAdapter extends RecyclerView.Adapter<CompletedEve
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        eventData = dataArrayList.get(position);
-        eventImage = Uri.parse(eventData.getEventImageURL());
+        event_info = dataArrayList.get(position);
+        eventImage = Uri.parse(event_info.getEventImage());
         Picasso.get().load(eventImage).into(holder.imageView);
-        holder.eventName.setText(eventData.getEventName());
-        holder.eventdate.setText(eventData.getEventDate());
-        holder.eventStartTime.setText(eventData.getEventStartTime());
-        holder.eventEndTime.setText(eventData.getEventEndTime());
+        holder.eventName.setText(event_info.getEventName());
+        holder.eventStartdate.setText(event_info.getEventStartDate());
+        holder.eventEndDate.setText(event_info.getEventEndDate());
+        holder.eventStartTime.setText(event_info.getEventStartTime());
+        holder.eventEndTime.setText(event_info.getEventEndTime());
 
     }
 
@@ -55,12 +56,13 @@ public class CompletedEventListAdapter extends RecyclerView.Adapter<CompletedEve
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView eventName,eventdate,eventStartTime,eventEndTime;
+        TextView eventName,eventStartdate,eventEndDate,eventStartTime,eventEndTime;
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.event_image_list_item);
             eventName = itemView.findViewById(R.id.eventName_item);
-            eventdate = itemView.findViewById(R.id.eventDate_item);
+            eventStartdate = itemView.findViewById(R.id.eventStartDate_item);
+            eventEndDate = itemView.findViewById(R.id.eventEndDate_item);
             eventStartTime = itemView.findViewById(R.id.eventStart_item);
             eventEndTime = itemView.findViewById(R.id.eventEnd_item);
 

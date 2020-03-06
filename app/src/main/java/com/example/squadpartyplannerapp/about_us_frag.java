@@ -3,9 +3,13 @@ package com.example.squadpartyplannerapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +19,11 @@ import android.view.ViewGroup;
  */
 public class about_us_frag extends Fragment {
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     public about_us_frag() {
         // Required empty public constructor
@@ -28,4 +37,9 @@ public class about_us_frag extends Fragment {
         return inflater.inflate(R.layout.fragment_about_us_frag, container, false);
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+    }
 }

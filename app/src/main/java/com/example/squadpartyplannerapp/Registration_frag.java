@@ -10,24 +10,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.squadpartyplannerapp.ModelClass.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -51,9 +46,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 
 public class Registration_frag extends Fragment implements View.OnClickListener {
     EditText fn,ln,email,phone,password,confirm_pass;
@@ -61,7 +53,7 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
     ImageView profilepic;
     String FirstName,LastName,EmailID,PhoneNo,Password,Confirm_Password,ImagePath = "";
     public Uri image_uri;
-    private String Imageextention = "";
+    private String Image_extention = "";
     Context context;
     NavController navController;
     private FirebaseDatabase firebaseDatabase;
@@ -127,26 +119,43 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
             Password = password.getText().toString();
             Confirm_Password = confirm_pass.getText().toString();
 
-            if(ImagePath != "" && !FirstName.isEmpty() && !LastName.isEmpty() && !EmailID.isEmpty() && !PhoneNo.isEmpty() && !Password.isEmpty() && !Confirm_Password.isEmpty())
+            if(image_uri == null)
+            {
+                Toast.makeText(context,"Please Select Profile Pic!",Toast.LENGTH_LONG).show();
+            }
+            else if(FirstName.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter FirstName!",Toast.LENGTH_LONG).show();
+            }
+            else if(LastName.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter LastName!",Toast.LENGTH_LONG).show();
+            }
+            else if(EmailID.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter !",Toast.LENGTH_LONG).show();
+            }
+            else if(Password.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter Password!",Toast.LENGTH_LONG).show();
+            }
+            else if(Confirm_Password.isEmpty())
+            {
+                Toast.makeText(context,"Please Enter Confirm Password!",Toast.LENGTH_LONG).show();
+            }
+            else
             {
                 if(Password.contentEquals(Confirm_Password))
                 {
-
                     registration();
                     Toast.makeText(context,"Everything is Perfect!",Toast.LENGTH_LONG).show();
                     navController.navigate(R.id.action_registration_frag_to_login_frag);
-
                 }
                 else
                 {
                     Toast.makeText(context,"Password are not same!",Toast.LENGTH_LONG).show();
                 }
             }
-            else
-            {
-                Toast.makeText(context,"Try Again.Something is wrong!",Toast.LENGTH_LONG).show();
-            }
-
         }
     }
 
@@ -249,7 +258,7 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
     {
         ContentResolver contentResolver = getActivity().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        Imageextention = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+        Image_extention = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     /** METHODS FOR PROFILE PIC END **/
@@ -272,7 +281,7 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
                         if(task.isSuccessful())
                         {
                             //Upload Image to ref
-                            storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(EmailID).child(System.currentTimeMillis()+"."+Imageextention);
+                            storageReference = FirebaseStorage.getInstance().getReference().child("ProfilePictures").child(EmailID).child(System.currentTimeMillis()+"."+Image_extention);
                             storageReference.putFile(image_uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -282,14 +291,16 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
                                             String url = uri.toString();
                                             Log.i("Image URL",url);
                                             //Other Data to DB
-                                                User user_data = new User(FirstName, LastName, EmailID, PhoneNo, Password, url);
+                                                User user = new User(FirstName, LastName, EmailID, PhoneNo, Password, url);
                                                 FirebaseDatabase.getInstance().getReference().child("User")
                                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                        .setValue(user_data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        Toast.makeText(getContext().getApplicationContext(), "Register Successful", Toast.LENGTH_SHORT).show();
-                                                        startActivity(new Intent(context, MainActivity.class));
+                                                        if(task.isComplete()) {
+                                                            Toast.makeText(getContext().getApplicationContext(), "Register Successful", Toast.LENGTH_SHORT).show();
+                                                            startActivity(new Intent(context, MainActivity.class));
+                                                        }
                                                     }
                                                 });
                                         }
