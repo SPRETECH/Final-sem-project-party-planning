@@ -78,7 +78,7 @@ public class add_event_f4 extends Fragment implements View.OnClickListener {
         ((AppCompatActivity)getActivity()).getSupportActionBar();
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add Event");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         sharedPreferences = getActivity().getSharedPreferences("AddEventData",Context.MODE_PRIVATE);
         context = getActivity().getApplicationContext();
         navController = Navigation.findNavController(getActivity(),R.id.nav_addEvent_host_fragment);
