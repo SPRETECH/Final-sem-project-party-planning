@@ -237,7 +237,7 @@ public class UpcomingEventDetails extends Fragment {
     private void DeleteEvent() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Delete Account");
+        builder.setTitle("Delete Event");
         builder.setMessage("Are you sure you want to delete this Event ? Once You delete this event, you will not be able to see this event again!")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
