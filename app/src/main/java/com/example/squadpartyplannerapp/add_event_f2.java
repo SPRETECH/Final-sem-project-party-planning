@@ -43,7 +43,7 @@ public class add_event_f2 extends Fragment implements View.OnClickListener{
     NavController navController;
     EditText No_of_Guests;
     TextView Start_Time,End_Time,StartDate,EndDate;
-    String[] Type_of_Event = {"Select Type of Event","Small","Medium","Large","Grand"};
+    String[] Type_of_Event = {"Select Type of Event","Birthday Party","Casual Party","Graduation Party","Fresher Party","Others"};
     Button Next;
     Spinner Type;
     ProgressBar progressBar;
