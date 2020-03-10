@@ -58,7 +58,7 @@ public class ForgetPassword_frag extends Fragment implements View.OnClickListene
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Forget Password");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         email_id = view.findViewById(R.id.email_forget);
         send_verification_email = view.findViewById(R.id.send_password_link_btn);

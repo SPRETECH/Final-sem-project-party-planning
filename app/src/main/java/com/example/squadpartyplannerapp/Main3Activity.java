@@ -77,7 +77,7 @@ public class Main3Activity extends AppCompatActivity implements NavigationView.O
         setDataInNavDrawer();
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         HomeDrawerLayout = findViewById(R.id.nav_drawer);

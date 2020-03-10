@@ -78,7 +78,7 @@ public class Login_frag extends Fragment implements View.OnClickListener{
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Login");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
 
 
         login.setOnClickListener(this);

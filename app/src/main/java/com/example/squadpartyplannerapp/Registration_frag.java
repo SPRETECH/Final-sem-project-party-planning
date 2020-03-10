@@ -94,7 +94,7 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
         //Toolbar
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Registration");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+       // ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         //Firebase Instance
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();

@@ -37,7 +37,8 @@
             android:text="Additional Features:"
             android:layout_marginTop="15dp"
             android:textAlignment="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:gravity="center_horizontal" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

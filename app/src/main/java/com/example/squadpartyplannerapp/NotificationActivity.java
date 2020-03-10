@@ -49,7 +49,7 @@ public class NotificationActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Notifications");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         notificationList = findViewById(R.id.notification_list);
         textView = findViewById(R.id.no_notificationText);
