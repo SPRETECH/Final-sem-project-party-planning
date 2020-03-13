@@ -201,10 +201,7 @@ public class Main3Activity extends AppCompatActivity implements NavigationView.O
                 navController.navigate(R.id.action_home_frag_to_about_us_frag);
                 //Toast.makeText(this,"About us",Toast.LENGTH_LONG).show();
                 break;
-            case R.id.delete_account_nav_draw:
-                deleteAccount();
-                //Toast.makeText(this,"Delete Account",Toast.LENGTH_LONG).show();
-                break;
+
             case R.id.log_out_nav_draw:
                 //Toast.makeText(this,"logout",Toast.LENGTH_LONG).show();
 

@@ -136,7 +136,7 @@
                 android:background="@drawable/text_path_bg"
                 android:backgroundTint="@android:color/darker_gray"
                 android:hint="Confirm Password"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"

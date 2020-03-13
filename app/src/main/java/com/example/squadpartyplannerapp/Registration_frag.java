@@ -94,7 +94,7 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
         //Toolbar
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Registration");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       // ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         //Firebase Instance
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -202,7 +202,7 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
 
 
 
-    private void SelectProfileImage() 
+    private void SelectProfileImage()
     {
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -291,18 +291,18 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
                                             String url = uri.toString();
                                             Log.i("Image URL",url);
                                             //Other Data to DB
-                                                User user = new User(FirstName, LastName, EmailID, PhoneNo, Password, url);
-                                                FirebaseDatabase.getInstance().getReference().child("User")
-                                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if(task.isComplete()) {
-                                                            Toast.makeText(getContext().getApplicationContext(), "Register Successful", Toast.LENGTH_SHORT).show();
-                                                            startActivity(new Intent(context, MainActivity.class));
-                                                        }
+                                            User user = new User(FirstName, LastName, EmailID, PhoneNo, Password, url);
+                                            FirebaseDatabase.getInstance().getReference().child("User")
+                                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if(task.isComplete()) {
+                                                        Toast.makeText(getContext().getApplicationContext(), "Register Successful", Toast.LENGTH_SHORT).show();
+                                                        startActivity(new Intent(context, MainActivity.class));
                                                     }
-                                                });
+                                                }
+                                            });
                                         }
                                     });
                                 }
@@ -317,5 +317,5 @@ public class Registration_frag extends Fragment implements View.OnClickListener 
     }
     /** Method For Sign up Process End*/
 
-    
+
 }
